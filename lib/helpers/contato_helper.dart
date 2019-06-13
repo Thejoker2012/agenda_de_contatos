@@ -113,6 +113,9 @@ class Contato{
   String telefone;
   String img;
 
+  //Construtor Vazio
+  Contato();
+
   //Construtor da classe contato
   Contato.fromMap(Map map){
 
