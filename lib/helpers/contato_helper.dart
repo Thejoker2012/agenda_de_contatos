@@ -42,6 +42,66 @@ class ContatoHelper{
     });
   }
 
+  //Função para salvar contatos no banco de dados
+  Future<Contato> saveContato(Contato contato) async{
+    Database dbContato = await database;
+    contato.id = await dbContato.insert(tabelaContato, contato.toMap());
+    return contato;
+  }
+
+  //Função para buscar dados no banco de dados
+  Future<Contato> getContato(int id) async {
+    Database dbContato = await database;
+    List<Map> maps = await dbContato.query(tabelaContato,
+    columns: [idColumn, nomeColumn,emailColumn,telefoneColumn,imgColumn],
+    where: "$idColumn = ?",
+    whereArgs: [id]);
+
+    if(maps.length > 0){
+      return Contato.fromMap(maps.first);
+    }
+    else{
+      return null;
+    }
+  }
+
+  //Função para deletar um dados do banco de dados
+  Future<int> deleteContato(int id) async{
+    Database dbContato = await database;
+    return await dbContato.delete(tabelaContato,where: "$idColumn = ?", whereArgs: [id]);
+  }
+
+  //Função para atualizar dados no banco de dados
+  Future<int> updateContato(Contato contato) async{
+    Database dbContato = await database; 
+    return await dbContato.update(tabelaContato, contato.toMap(),where:"$idColumn = ?", whereArgs: [contato.id] );
+
+  }
+
+  //Função para buscar todos os contatos no banco
+  Future<List> getAllContatos() async{
+    Database dbContato = await database;
+    List listMap = await dbContato.rawQuery("SELECT * FROM $tabelaContato");
+    List<Contato> listContatos = List();
+    for(Map m in listMap){
+      listContatos.add(Contato.fromMap(m));
+    }
+    return listContatos;
+  }
+
+  //Função para pegar um numero no banco
+  Future<int> getNumber() async{
+    Database dbContato = await database;
+    return Sqflite.firstIntValue(await dbContato.rawQuery("SELECT COUNT(*) FROM $tabelaContato"));
+  }
+
+  //Função para fechar o banco de dados
+  Future close() async{
+    Database dbContato = await database;
+    dbContato.close();
+  }
+
+
 }
 
 //Classe Beans
