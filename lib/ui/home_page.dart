@@ -10,25 +10,23 @@ class _HomePageState extends State<HomePage> {
 
   ContatoHelper helper = ContatoHelper();
 
-  @override
-  void initState() {
-    super.initState();
 
-    /*Contato contato = Contato();
-    contato.nome = "Iago Oliveira";
-    contato.email = "iago@teste.com";
-    contato.telefone = "32121004";
-    contato.img = "imagenTeste";
 
-    helper.saveContato(contato);*/
-
-   helper.getAllContatos().then((List){
-     print(List);
-   });
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Contatos"),
+        backgroundColor: Colors.red,
+        centerTitle: true,
+      ),
+      backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){},
+        child: Icon(Icons.add),
+        backgroundColor: Colors.red,
+        ),
+    );
   }
 }
