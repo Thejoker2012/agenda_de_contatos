@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    super.initState();
 
     /*Contato contato = Contato();
     contato.nome = "Iago Oliveira";
