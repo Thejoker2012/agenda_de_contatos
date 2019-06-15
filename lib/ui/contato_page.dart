@@ -29,7 +29,21 @@ class _ContatoPageState extends State<ContatoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        title: Text(_editeContato.nome ?? "Novo Contato"),
+        centerTitle: true,
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: (){},
+          child: Icon(Icons.save),
+        backgroundColor: Colors.red,
+      ),
+
+
+    );
   }
 }
 
