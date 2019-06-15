@@ -10,8 +10,17 @@ class _HomePageState extends State<HomePage> {
 
   ContatoHelper helper = ContatoHelper();
 
+  List<Contato> contato =  List();
 
+  @override
+  void initState() {
 
+    helper.getAllContatos().then((list){
+      setState(() {
+        contato = list;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +36,13 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.add),
         backgroundColor: Colors.red,
         ),
+      body: ListView.builder(
+        padding: EdgeInsets.all(10.0),
+        itemCount: contato.length,
+        itemBuilder: (context, index){
+
+        },
+      ),
     );
   }
 }
