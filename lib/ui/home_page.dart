@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:agenda_de_contatos/helpers/contato_helper.dart';
 import 'package:flutter/material.dart';
 
+import 'contato_page.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -12,7 +14,7 @@ class _HomePageState extends State<HomePage> {
 
   ContatoHelper helper = ContatoHelper();
 
-  List<Contato> contato =  List();
+  List<Contato> contatos =  List();
 
   @override
   void initState() {
@@ -25,11 +27,7 @@ class _HomePageState extends State<HomePage> {
     contato.img = "imagenTeste";
     helper.saveContato(contato);*/
 
-    helper.getAllContatos().then((list){
-      setState(() {
-        contato = list;
-      });
-    });
+    _getAllContatos();
   }
 
   @override
@@ -42,13 +40,15 @@ class _HomePageState extends State<HomePage> {
       ),
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          _showContatoPage();
+        },
         child: Icon(Icons.add),
         backgroundColor: Colors.red,
         ),
       body: ListView.builder(
         padding: EdgeInsets.all(10.0),
-        itemCount: contato.length,
+        itemCount: contatos.length,
         itemBuilder: (context, index){
           return _contatoCard(context, index);
         },
@@ -68,8 +68,8 @@ class _HomePageState extends State<HomePage> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                    image: contato[index].img != null ?
-                    FileImage(File(contato[index].img)):
+                    image: contatos[index].img != null ?
+                    FileImage(File(contatos[index].img)):
                         AssetImage("images/images.png"),
                 ),
               ),
@@ -79,16 +79,16 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(contato[index].nome ?? "",
+                  Text(contatos[index].nome ?? "",
                     style: TextStyle(fontSize: 22.0,
                         fontWeight: FontWeight.bold
                     ),
                   ),
-                  Text(contato[index].email ?? "",
+                  Text(contatos[index].email ?? "",
                     style: TextStyle(fontSize: 18.0
                     ),
                   ),
-                  Text(contato[index].telefone ?? "",
+                  Text(contatos[index].telefone ?? "",
                     style: TextStyle(fontSize: 18.0
                     ),
                   ),
@@ -99,6 +99,34 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       ),
+      onTap: (){
+        _showContatoPage(contato: contatos[index]);
+      },
     );
   }
+  void _showContatoPage({Contato contato}) async{
+    final recContato =  await Navigator.push(context,
+        MaterialPageRoute(builder: (context) =>
+            ContatoPage(contato: contato
+            )
+        )
+    );
+    if(recContato != null){
+      if(contato != null){
+        await helper.updateContato(recContato);
+        _getAllContatos();
+      }else{
+        await helper.saveContato(recContato);
+      }
+      _getAllContatos();
+    }
+  }
+  void _getAllContatos(){
+    helper.getAllContatos().then((list){
+      setState(() {
+        contatos = list;
+      });
+    });
+  }
 }
+

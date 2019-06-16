@@ -20,6 +20,8 @@ class _ContatoPageState extends State<ContatoPage> {
   final _emailController = TextEditingController();
   //final _telefoneController = TextEditingController();
 
+  final _nameFocus = FocusNode();
+
   final _telefoneMask = MaskedTextController(mask: "(00) 00000-0000");
 
   bool _userEdited = false;
@@ -51,7 +53,14 @@ class _ContatoPageState extends State<ContatoPage> {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: (){},
+          onPressed: (){
+            if( _editeContato.nome != null && _editeContato.nome.isNotEmpty){
+              Navigator.pop(context,_editeContato);
+            }else{
+              FocusScope.of(context).requestFocus(_nameFocus);
+
+            }
+          },
           child: Icon(Icons.save),
         backgroundColor: Colors.red,
       ),
@@ -75,6 +84,7 @@ class _ContatoPageState extends State<ContatoPage> {
             ),
             TextField(
               controller: _nomeController,
+              focusNode: _nameFocus,
               decoration: InputDecoration(labelText: "Nome"),
               onChanged: (text){
                 _userEdited = true;
