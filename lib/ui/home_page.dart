@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:agenda_de_contatos/helpers/contato_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'contato_page.dart';
 
@@ -63,8 +64,8 @@ class _HomePageState extends State<HomePage> {
           child: Row(
             children: <Widget>[
               Container(
-                width: 80.0,
-                height: 80.0,
+                width: 70.0,
+                height: 70.0,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
@@ -127,7 +128,10 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 20.0,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          launch("tel:${contatos[index].telefone}");
+                          Navigator.pop(context);
+                        },
                       ),
                     ),
                     Padding(

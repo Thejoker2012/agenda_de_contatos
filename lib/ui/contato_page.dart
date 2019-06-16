@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:agenda_de_contatos/helpers/contato_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ContatoPage extends StatefulWidget {
   final Contato contato; //Declaração do contato na página
@@ -80,6 +81,14 @@ class _ContatoPageState extends State<ContatoPage> {
                     ),
                   ),
                 ),
+                onTap:(){
+                  ImagePicker.pickImage(source: ImageSource.camera).then((file){
+                    if(file ==null) return;
+                    setState(() {
+                      _editeContato.img = file.path;
+                    });
+                  });
+                } ,
               ),
               TextField(
                   controller: _nomeController,
